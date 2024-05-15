@@ -40,3 +40,15 @@ dynamic_filters = DynamicFilters(df=df, filters=['category_name','retailer_name'
 dynamic_filters.display_filters(location='sidebar')
 
 dynamic_filters.display_df()
+
+def filter_chart(dataset : pd.DataFrame ) -> pd.DataFrame:
+    filter_products = st.multiselect('Select products to filter graphics', dataset['product_name'].unique())
+
+    if filter_products:
+        dataset = dataset[dataset['product_name'].isin(filter_products)]
+    return dataset
+
+st.write('Current prices by product')
+
+st.line_chart(filter_chart(df), x="full_date", y="product_current_price", color="product_name")
+
